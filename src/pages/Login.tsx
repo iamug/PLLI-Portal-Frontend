@@ -7,7 +7,7 @@ const Login: React.FC = () => {
     <div
       className="py-5 min-vh-100 "
       style={{
-        background: `linear-gradient( rgba(0,0,0,0.9), rgba(0,0,0, 0.9)) , url(http://lab.plli.org/web/wp-content/uploads/2022/04/leadership-min.jpg) center / cover fixed `,
+        background: `linear-gradient( rgba(0,0,0,0.7), rgba(0,0,0, 0.7)) , url(http://lab.plli.org/web/wp-content/uploads/2022/04/leadership-min.jpg) center / cover fixed `,
       }}
     >
       <Container className="py-lg-5">
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
               <div className="col-12 text-center mt-3">
                 <p className="text-dark">
                   Don&apos;t have an account ?{" "}
-                  <Link to="/signup" className="text-decoration-none h5">
+                  <Link to="./signup" className="text-decoration-none h5">
                     {" "}
                     Signup{" "}
                   </Link>

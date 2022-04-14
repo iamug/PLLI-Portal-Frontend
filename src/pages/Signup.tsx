@@ -155,7 +155,7 @@ const Signup: React.FC = () => {
     <div
       className="py-5 min-vh-100 "
       style={{
-        background: `linear-gradient( rgba(0,0,0,0.9), rgba(0,0,0, 0.9)) , url(http://lab.plli.org/web/wp-content/uploads/2022/04/leadership-min.jpg) center / cover fixed `,
+        background: `linear-gradient( rgba(0,0,0,0.7), rgba(0,0,0, 0.7)) , url(http://lab.plli.org/web/wp-content/uploads/2022/04/leadership-min.jpg) center / cover fixed `,
       }}
       //   style={{ background: `url('https://spruko.com/demo/sash/sash/assets/images/media/bg2.jpg') center center / cover` }}
     >
@@ -543,7 +543,7 @@ const Signup: React.FC = () => {
                   <div className="col-12 text-center mt-4">
                     <p className="text-dark">
                       Already have an account ?{" "}
-                      <Link to="/login" className="text-decoration-none h5">
+                      <Link to="./login" className="text-decoration-none h5">
                         {" "}
                         Signin{" "}
                       </Link>
