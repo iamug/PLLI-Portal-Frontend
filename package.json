@@ -1,0 +1,64 @@
+{
+  "name": "activeedge-exercise",
+  "version": "0.1.0",
+  "homepage": "https://lab.plli.org/portal/",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^12.20.23",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.1.0",
+    "formik": "^2.2.9",
+    "moment": "^2.29.2",
+    "node-sass": "^6.0.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.0-beta.6",
+    "react-dom": "^17.0.2",
+    "react-query": "^3.21.1",
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "4.0.3",
+    "react-toastify": "^8.2.0",
+    "typescript": "^4.4.2",
+    "web-vitals": "^1.1.2",
+    "yup": "^0.32.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.8",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "eslint-plugin-react": "^7.29.4",
+    "sass-loader": "^10.1.1"
+  }
+}
