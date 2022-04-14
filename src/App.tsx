@@ -9,7 +9,8 @@ import "react-toastify/dist/ReactToastify.min.css";
 
 function App() {
   return (
-    <Router>
+    // <BrowserRouter basename='/path/to/subfolder/'></BrowserRouter>
+    <Router basename="/portal">
       {/* <Layout> */}
       <ToastContainer position="bottom-center" autoClose={4000} limit={1} />
       <Switch>
