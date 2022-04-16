@@ -1,17 +1,28 @@
 import { Formik, Field } from "formik";
 import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { Modal, Form, FloatingLabel, Button } from "react-bootstrap";
-import * as yup from "yup";
-import Container from "react-bootstrap/Container";
-import { Input, Select } from "../components/elements/form";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import * as yup from "yup";
+import axios from "axios";
+import Container from "react-bootstrap/Container";
+import { Input, PasswordInput, Select } from "../components/elements/form";
 
 const Signup: React.FC = () => {
+  const history = useHistory();
   const initialValues = {};
-
+  const [loading, setLoading] = useState(true);
   const [step, setStep] = useState<number>(0);
   const [initialState, setIntialState] = useState<any>(initialValues);
+  const { REACT_APP_BASEURL } = process.env;
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      // withCredentials: false,
+      // "Access-Control-Allow-Origin": "*",
+    },
+  };
 
   const schema = yup.object().shape({
     fullname: yup.string().required().min(4).label("Fullname"),
@@ -92,7 +103,39 @@ const Signup: React.FC = () => {
       then: yup.string().required("Field"),
       otherwise: yup.string().optional(),
     }),
+    //password
+    password: yup.string().trim().required("Please Enter your password"),
+    confirmPassword: yup
+      .string()
+      .trim()
+      .required()
+      .test("passwords-match", "Passwords must match", function (value) {
+        return this.parent.password === value;
+      }),
   });
+
+  const signup = async (data: Record<string, string>) => {
+    try {
+      setLoading(true);
+      let body = { ...data };
+      const res: any = await axios.post(`${REACT_APP_BASEURL}auth/register`, body, config);
+      const {
+        token,
+        user: { fullname, email, phome },
+      } = res?.data?.payload || {};
+      localStorage.setItem("token", token);
+      const userData = { fullname, email, phome };
+      localStorage.setItem("user", JSON.stringify(userData));
+      toast.success("Registration Successful.");
+      history.push("./dashboard");
+      setLoading(false);
+    } catch (error: any) {
+      // console.log({ error });
+      let msg = error?.response?.data?.message ?? "Kindly try again.";
+      toast.error(msg);
+      setLoading(false);
+    }
+  };
 
   const validateStep0 = (errors: any) => {
     const neededKeys = ["fullname", "gender", "email", "phone"];
@@ -148,6 +191,15 @@ const Signup: React.FC = () => {
       const arr = neededKeys.filter((i) => errors[i]);
       if (arr.length > 0) return toast.error(`Error. ${errors[arr[0]]}`);
     }
+    setStep(4);
+  };
+
+  const validateStep4 = (errors: any) => {
+    const neededKeys = ["password", "confirmPassword"];
+    if (neededKeys.some((key) => Object.keys(errors).includes(key))) {
+      const arr = neededKeys.filter((i) => errors[i]);
+      if (arr.length > 0) return toast.error(`Error. ${errors[arr[0]]}`);
+    }
     // setStep(4);
   };
 
@@ -178,10 +230,7 @@ const Signup: React.FC = () => {
             validateOnBlur={true}
             validateOnMount={true}
             initialValues={initialState}
-            onSubmit={(data) => {
-              console.log({ data });
-              // !dataUpdate && createPage(data);
-            }}
+            onSubmit={(data) => signup(data)}
           >
             {({ values, errors, validateForm, handleChange, isValid, handleSubmit }) => (
               <>
@@ -497,10 +546,25 @@ const Signup: React.FC = () => {
                           )}
                         </>
                       )}
+                      {step == 4 && (
+                        <>
+                          <div className="col-lg-12 mt-2">
+                            <Form.Group className=" my-3">
+                              <PasswordInput name="password" placeholder="Enter password" />
+                            </Form.Group>
+                          </div>
+
+                          <div className="col-lg-12 mt-2">
+                            <Form.Group className=" my-3">
+                              <PasswordInput name="confirmPassword" label="Confirm Password" placeholder="Confirm password" />
+                            </Form.Group>
+                          </div>
+                        </>
+                      )}
 
                       {/* <pre>{JSON.stringify({ errors, values, isValid }, null, 2)}</pre> */}
                     </div>
-                    {step == 3 && (
+                    {step == 4 && (
                       <button className="w-100 btn btn-lg btn-primary" type="submit">
                         Sign Up
                       </button>
@@ -517,7 +581,7 @@ const Signup: React.FC = () => {
                     </div>
 
                     <div className="col-5 col-lg-3">
-                      {step < 3 && (
+                      {step < 4 && (
                         <button
                           className="w-100 btn btn-lg btn-outline-primary"
                           type="button"
@@ -530,6 +594,8 @@ const Signup: React.FC = () => {
                               ? validateStep2(errors)
                               : step == 3
                               ? validateStep3(errors)
+                              : step == 4
+                              ? validateStep4(errors)
                               : null;
                           }}
                         >

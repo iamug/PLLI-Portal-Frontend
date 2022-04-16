@@ -1,4 +1,4 @@
-import React, { ElementType } from "react";
+import React, { ElementType, useState } from "react";
 import { Field } from "formik";
 import { Form, FloatingLabel, InputGroup } from "react-bootstrap";
 import { capitalizeFirstLetter } from "../../../helpers";
@@ -41,6 +41,39 @@ export const Input = ({ name, type, label, disableLabel = true, disableValidatio
                 {...props}
               />
             </FloatingLabel>
+            {meta.touched && meta.error && <span className="text-danger">{meta.error}</span>}
+          </>
+        )}
+      </Field>
+    </>
+  );
+};
+
+export const PasswordInput = ({ name, type, label, disableLabel = true, disableValidation = true, ...props }: INPUT) => {
+  const [showpassword, setShowpassword] = useState(false);
+
+  return (
+    <>
+      <Field name={name}>
+        {({ field, meta }: any) => (
+          <>
+            <div className="w-100 d-flex mb-2  justify-content-between align-content-stretch align-items-stretch">
+              <FloatingLabel label={!disableLabel ? " " : label || capitalizeFirstLetter(name)} className="mb-0" style={{ flex: 1 }}>
+                <Form.Control
+                  // className="border-0"
+                  // style={{ outline: 0, boxShadow: "none" }}
+                  type={showpassword ? "text" : "password"}
+                  isInvalid={!disableValidation && (meta.value || meta.touched) && meta.error}
+                  isValid={!disableValidation && (meta.value || meta.touched) && !meta.error}
+                  {...field}
+                  {...props}
+                />
+              </FloatingLabel>
+
+              <button className=" btn btn-lg btn-primaryLight" type="button" onClick={() => setShowpassword(!showpassword)}>
+                <i className={showpassword ? "far fa-eye " : "far fa-eye-slash "} />
+              </button>
+            </div>
             {meta.touched && meta.error && <span className="text-danger">{meta.error}</span>}
           </>
         )}

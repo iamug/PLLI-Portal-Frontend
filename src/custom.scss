@@ -7,7 +7,7 @@ $primary: #081a44;
 $secondary : #ed6e16;
 
 
-
+// 
 // @import "../node_modules/bootstrap/scss/mixins";
 
 @import "../node_modules/bootstrap/scss/variables";
@@ -38,7 +38,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 
 
-// @import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables";
 
 $form-floating-line-height:       1.35;
 $form-floating-padding-y:         1rem;
@@ -47,6 +47,6 @@ $form-floating-label-transform:   scale(.75) translateY(-.6rem) translateX(.15re
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
-@import "../node_modules/bootstrap/scss/root";
-@import "../node_modules/bootstrap/scss/reboot";
-@import "../node_modules/bootstrap/scss/type";
+// @import "../node_modules/bootstrap/scss/root";
+// @import "../node_modules/bootstrap/scss/reboot";
+// @import "../node_modules/bootstrap/scss/type";

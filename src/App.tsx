@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout";
+import { ProtectedRoute } from "./controllers/auth";
 import { Artists, Albums, AlbumPhotos, Tweets, Signup, Login } from "./pages";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
@@ -18,14 +19,15 @@ function App() {
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
 
-        {/* <Layout>
+        <Layout>
           <Switch>
-            {/* <Route path="/artists" exact component={Artists} />
+            <ProtectedRoute path="/dashboard" exact component={Artists} />
+            {/* <Route path="/dashboard" exact component={Artists} /> */}
             <Route path="/artists/:userId/albums" exact component={Albums} />
             <Route path="/artists/:userId/albums/:albumId/photos" exact component={AlbumPhotos} />
-            <Route path="/artists/:userId/tweets" exact component={Tweets} /> 
+            <Route path="/artists/:userId/tweets" exact component={Tweets} />
           </Switch>
-        </Layout> */}
+        </Layout>
 
         <Route component={Login} />
       </Switch>
