@@ -25,8 +25,8 @@ const Signup: React.FC = () => {
   };
 
   const schema = yup.object().shape({
-    firstname: yup.string().required().min(4).label("Firstname"),
-    lastname: yup.string().required().min(4).label("Lastname"),
+    firstname: yup.string().required().label("Firstname"),
+    lastname: yup.string().required().label("Lastname"),
     gender: yup.string().required().min(4).label("Gender"),
     email: yup.string().email().required().label("Email Address"),
     phone: yup.string().required().min(8).max(14).label("Phone Number"),
@@ -112,7 +112,8 @@ const Signup: React.FC = () => {
       .required()
       .test("passwords-match", "Passwords must match", function (value) {
         return this.parent.password === value;
-      }),
+      })
+      .label("Confirm Password"),
   });
 
   const signup = async (data: Record<string, string>) => {
@@ -267,7 +268,7 @@ const Signup: React.FC = () => {
                                 label="Gender"
                                 options={[
                                   { label: "Male", value: "male" },
-                                  { label: "Feale", value: "female" },
+                                  { label: "Female", value: "female" },
                                 ]}
                               />
                             </Form.Group>
