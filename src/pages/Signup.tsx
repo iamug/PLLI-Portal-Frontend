@@ -25,7 +25,8 @@ const Signup: React.FC = () => {
   };
 
   const schema = yup.object().shape({
-    fullname: yup.string().required().min(4).label("Fullname"),
+    firstname: yup.string().required().min(4).label("Firstname"),
+    lastname: yup.string().required().min(4).label("Lastname"),
     gender: yup.string().required().min(4).label("Gender"),
     email: yup.string().email().required().label("Email Address"),
     phone: yup.string().required().min(8).max(14).label("Phone Number"),
@@ -138,7 +139,7 @@ const Signup: React.FC = () => {
   };
 
   const validateStep0 = (errors: any) => {
-    const neededKeys = ["fullname", "gender", "email", "phone"];
+    const neededKeys = ["firstname", "lastname", "gender", "email", "phone"];
     if (neededKeys.some((key) => Object.keys(errors).includes(key))) {
       const arr = neededKeys.filter((i) => errors[i]);
       if (arr.length > 0) return toast.error(`Error. ${errors[arr[0]]}`);
@@ -241,7 +242,22 @@ const Signup: React.FC = () => {
                         <>
                           <div className="col-lg-6 mt-2">
                             <Form.Group className="mb-3">
-                              <Input name="fullname" placeholder="Enter full name" />
+                              <Input name="firstname" placeholder="Enter first name" />
+                            </Form.Group>
+                          </div>
+                          <div className="col-lg-6 mt-2">
+                            <Form.Group className="mb-3">
+                              <Input name="lastname" placeholder="Enter last name" />
+                            </Form.Group>
+                          </div>
+                          <div className="col-lg-12 mt-2">
+                            <Form.Group className="mb-3">
+                              <Input name="email" label="Email Address" placeholder="Enter email" />
+                            </Form.Group>
+                          </div>
+                          <div className="col-lg-6 mt-2">
+                            <Form.Group className="mb-3">
+                              <Input name="phone" label="Phone Number" placeholder="Enter phone number" />
                             </Form.Group>
                           </div>
                           <div className="col-lg-6 mt-2">
@@ -254,16 +270,6 @@ const Signup: React.FC = () => {
                                   { label: "Feale", value: "female" },
                                 ]}
                               />
-                            </Form.Group>
-                          </div>
-                          <div className="col-lg-6 mt-2">
-                            <Form.Group className="mb-3">
-                              <Input name="email" label="Email Address" placeholder="Enter email" />
-                            </Form.Group>
-                          </div>
-                          <div className="col-lg-6 mt-2">
-                            <Form.Group className="mb-3">
-                              <Input name="phone" label="Phone Number" placeholder="Enter phone number" />
                             </Form.Group>
                           </div>
                         </>
