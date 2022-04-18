@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Field } from "formik";
 import { Modal, Form, Container, FormControl, InputGroup, FloatingLabel } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ const { REACT_APP_BASEURL } = process.env;
 
 const Login: React.FC = () => {
   const history = useHistory();
+  const { resetToken } = useParams<{ resetToken: string }>();
   const initialValues = {};
   const [loading, setLoading] = useState(true);
   const [initialState, setIntialState] = useState<Record<string, string>>(initialValues);
@@ -25,25 +26,29 @@ const Login: React.FC = () => {
   };
 
   const schema = yup.object().shape({
-    email: yup.string().email().required("Required").label("Email Address"),
-    password: yup.string().required("Required").label("Password"),
+    password: yup.string().trim().required("Please Enter your password"),
+    confirmPassword: yup
+      .string()
+      .trim()
+      .required()
+      .test("passwords-match", "Passwords must match", function (value) {
+        return this.parent.password === value;
+      })
+      .label("Confirm Password"),
   });
 
-  const login = async (data: Record<string, string>) => {
+  const resetpassword = async (data: Record<string, string>) => {
     try {
       setLoading(true);
       let body = { ...data };
-      const res: any = await axios.post(`${REACT_APP_BASEURL}auth/login`, body, config);
-      const {
-        token,
-        user: { fullname, email },
-      } = res?.data?.payload || {};
-      localStorage.setItem("token", token);
-      const userData = { fullname, email };
-      localStorage.setItem("user", JSON.stringify(userData));
-      toast.success("Login Successful.");
-      history.push("./dashboard");
-      setLoading(false);
+      const res: any = await axios.post(`${REACT_APP_BASEURL}auth/resetpassword/${resetToken}`, body, config);
+      console.log({ res });
+      const { message } = res?.data?.payload || {};
+      toast.success(message, { autoClose: 7000 });
+      setTimeout(() => {
+        history.push("./login");
+      }, 9000);
+      // setLoading(false);
     } catch (error: any) {
       // console.log({ error });
       let msg = error?.response?.data?.message ?? "Kindly try again.";
@@ -52,6 +57,12 @@ const Login: React.FC = () => {
     }
   };
 
+  // const fetch = async () => {
+  //   try {
+  //     const res: any = await axios.get(`${HospitalServiceUrl}prescription/all`, config);
+  //     res.data?.payload?.status && setPrescriptions(res.data.payload.message || []);
+  //   } catch (error) {}
+  // };
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -71,7 +82,7 @@ const Login: React.FC = () => {
             validateOnBlur={true}
             validateOnMount={true}
             initialValues={initialState}
-            onSubmit={(data) => login(data)}
+            onSubmit={(data) => resetpassword(data)}
           >
             {({ values, errors, validateForm, handleChange, isValid, handleSubmit }) => (
               <>
@@ -84,42 +95,34 @@ const Login: React.FC = () => {
                       // width={72}
                       height={100}
                     />
-                    <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
-                    <p className="text-muted mb-3 fw-normal">Enter your email address and password to access your account.</p>
+                    <h1 className="h3 mb-3 fw-normal">Reset Password</h1>
+                    <p className="text-muted mb-3 fw-normal">Enter your new password and confirm it.</p>
                   </div>
-                  <div className="my-3">
-                    <Form.Group className="mb-3">
-                      <Input name="email" label="Email Address" placeholder="Enter email" />
-                    </Form.Group>
-                  </div>
-                  <div className="row mt-2">
-                    <div className="col-12 text-center my-1">
-                      <p className="text-dark text-end mb-0">
-                        <Link to="./forgotpassword" className="text-decoration-none h6 mb-0 text-muted">
-                          Forgot your password ?
-                        </Link>
-                      </p>
-                    </div>{" "}
-                    {/* end col */}
-                  </div>
-                  <div className="mb-">
-                    <Form.Group className=" my-2">
+                  <div className=" mt-2">
+                    <Form.Group className=" my-3">
                       <PasswordInput name="password" placeholder="Enter password" />
                     </Form.Group>
                   </div>
+
+                  <div className=" mt-2">
+                    <Form.Group className=" my-3">
+                      <PasswordInput name="confirmPassword" label="Confirm Password" placeholder="Confirm password" />
+                    </Form.Group>
+                  </div>
+
                   {/* <pre>{JSON.stringify({ errors, values, isValid }, null, 2)}</pre> */}
                   <button className="w-100 btn btn-lg btn-primary" type="submit">
                     {/* Sign in */}
-                    {loading ? "Please wait...." : "Signin"}
+                    {loading ? "Please wait...." : "Reset Password"}
                   </button>
                 </form>
 
                 <div className="row mt-5 hidden">
                   <div className="col-12 text-center mt-4">
                     <p className="text-dark">
-                      Don&apos;t have an account ?{" "}
-                      <Link to="./signup" className="text-decoration-none h5">
-                        Signup
+                      Back to{" "}
+                      <Link to="./login" className="text-decoration-none h5">
+                        Login
                       </Link>
                     </p>
                   </div>{" "}

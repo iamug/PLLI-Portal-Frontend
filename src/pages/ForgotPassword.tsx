@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Field } from "formik";
-import { Modal, Form, Container, FormControl, InputGroup, FloatingLabel } from "react-bootstrap";
+import { Formik } from "formik";
+import { Form, Container, FormControl } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import { Input, PasswordInput } from "../components/elements/form";
+import { Input } from "../components/elements/form";
 const { REACT_APP_BASEURL } = process.env;
 
 const Login: React.FC = () => {
@@ -26,23 +26,15 @@ const Login: React.FC = () => {
 
   const schema = yup.object().shape({
     email: yup.string().email().required("Required").label("Email Address"),
-    password: yup.string().required("Required").label("Password"),
   });
 
-  const login = async (data: Record<string, string>) => {
+  const forgotpassword = async (data: Record<string, string>) => {
     try {
       setLoading(true);
       let body = { ...data };
-      const res: any = await axios.post(`${REACT_APP_BASEURL}auth/login`, body, config);
-      const {
-        token,
-        user: { fullname, email },
-      } = res?.data?.payload || {};
-      localStorage.setItem("token", token);
-      const userData = { fullname, email };
-      localStorage.setItem("user", JSON.stringify(userData));
-      toast.success("Login Successful.");
-      history.push("./dashboard");
+      const res: any = await axios.post(`${REACT_APP_BASEURL}auth/forgotpassword`, body, config);
+      const { message } = res?.data?.payload || {};
+      toast.success(message, { autoClose: 6000 });
       setLoading(false);
     } catch (error: any) {
       // console.log({ error });
@@ -71,7 +63,7 @@ const Login: React.FC = () => {
             validateOnBlur={true}
             validateOnMount={true}
             initialValues={initialState}
-            onSubmit={(data) => login(data)}
+            onSubmit={(data) => forgotpassword(data)}
           >
             {({ values, errors, validateForm, handleChange, isValid, handleSubmit }) => (
               <>
@@ -84,42 +76,28 @@ const Login: React.FC = () => {
                       // width={72}
                       height={100}
                     />
-                    <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
-                    <p className="text-muted mb-3 fw-normal">Enter your email address and password to access your account.</p>
+                    <h1 className="h3 mb-3 fw-normal">Forgot your password ?</h1>
+                    <p className="text-muted mb-3 fw-normal">
+                      Enter your email address and we&apos;ll send you an email with instructions to reset your password.
+                    </p>
                   </div>
                   <div className="my-3">
                     <Form.Group className="mb-3">
                       <Input name="email" label="Email Address" placeholder="Enter email" />
                     </Form.Group>
                   </div>
-                  <div className="row mt-2">
-                    <div className="col-12 text-center my-1">
-                      <p className="text-dark text-end mb-0">
-                        <Link to="./forgotpassword" className="text-decoration-none h6 mb-0 text-muted">
-                          Forgot your password ?
-                        </Link>
-                      </p>
-                    </div>{" "}
-                    {/* end col */}
-                  </div>
-                  <div className="mb-">
-                    <Form.Group className=" my-2">
-                      <PasswordInput name="password" placeholder="Enter password" />
-                    </Form.Group>
-                  </div>
                   {/* <pre>{JSON.stringify({ errors, values, isValid }, null, 2)}</pre> */}
                   <button className="w-100 btn btn-lg btn-primary" type="submit">
                     {/* Sign in */}
-                    {loading ? "Please wait...." : "Signin"}
+                    {loading ? "Please wait...." : "Recover Password"}
                   </button>
                 </form>
-
                 <div className="row mt-5 hidden">
                   <div className="col-12 text-center mt-4">
                     <p className="text-dark">
-                      Don&apos;t have an account ?{" "}
-                      <Link to="./signup" className="text-decoration-none h5">
-                        Signup
+                      Back to{" "}
+                      <Link to="./login" className="text-decoration-none h5">
+                        Login
                       </Link>
                     </p>
                   </div>{" "}

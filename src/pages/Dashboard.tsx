@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import API from "../controllers/api";
-import { Artist } from "../components/";
+import { Artist } from "../components";
 import { Link } from "react-router-dom";
 
-const Artists = () => {
+const Dashboard = () => {
   let [user, setUser] = useState<any>({});
   let [refreshData, setRefreshData] = useState(false);
   let [loading, setLoading] = useState(false);
@@ -68,4 +68,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default Dashboard;
